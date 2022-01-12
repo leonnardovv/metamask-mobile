@@ -111,7 +111,6 @@ const Text = ({
 			grey && style.grey,
 			red && style.red,
 			orange && style.orange,
-			black && style.black,
 			primary && style.primary,
 			disclaimer && [style.small, style.disclaimer],
 			small && style.small,
@@ -152,7 +151,7 @@ Text.defaultProps = {
 
 Text.propTypes = {
 	/**
-	 * Removes teh default style
+	 * Removes the default style
 	 */
 	reset: PropTypes.bool,
 	/**
