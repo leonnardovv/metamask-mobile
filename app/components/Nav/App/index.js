@@ -173,12 +173,12 @@ const App = ({ userLoggedIn }) => {
 		}
 	}, []);
 
-	const branchSubscriber = new BranchSubscriber({
-		onOpenStart: (opts) => handleDeeplink(opts),
-		onOpenComplete: (opts) => handleDeeplink(opts),
-	});
-
 	useEffect(() => {
+		const branchSubscriber = new BranchSubscriber({
+			onOpenStart: (opts) => handleDeeplink(opts),
+			onOpenComplete: (opts) => handleDeeplink(opts),
+		});
+
 		SharedDeeplinkManager.init({
 			navigate: (routeName, opts) => {
 				const params = { name: routeName, params: opts };
@@ -189,7 +189,7 @@ const App = ({ userLoggedIn }) => {
 		unsubscribeFromBranch.current = branchSubscriber.subscribe();
 
 		return () => unsubscribeFromBranch.current?.();
-	}, [branchSubscriber]);
+	}, [handleDeeplink]);
 
 	useEffect(() => {
 		const initAnalytics = async () => {
