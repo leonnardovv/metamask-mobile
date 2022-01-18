@@ -153,27 +153,27 @@ const App = ({ userLoggedIn }) => {
 	const dispatch = useDispatch();
 	const triggerCheckedAuth = () => dispatch(checkedAuth('onboarding'));
 
-	useEffect(
-		() =>
-			branch.subscribe(({ error, params, uri }) => {
-				if (error) {
-					trackErrorAsAnalytics(error, 'Branch:');
+	const branchSubscribe = () => {
+		branch.subscribe(({ error, params, uri }) => {
+			if (error) {
+				trackErrorAsAnalytics(error, 'Branch:');
+			}
+			const deeplink = params?.['+non_branch_link'] || uri || null;
+			try {
+				if (deeplink) {
+					const { KeyringController } = Engine.context;
+					const isUnlocked = KeyringController.isUnlocked();
+					isUnlocked
+						? SharedDeeplinkManager.parse(deeplink, { origin: AppConstants.DEEPLINKS.ORIGIN_DEEPLINK })
+						: SharedDeeplinkManager.setDeeplink(deeplink);
 				}
-				const deeplink = params?.['+non_branch_link'] || uri || null;
-				try {
-					if (deeplink) {
-						const { KeyringController } = Engine.context;
-						const isUnlocked = KeyringController.isUnlocked();
-						isUnlocked
-							? SharedDeeplinkManager.parse(deeplink, { origin: AppConstants.DEEPLINKS.ORIGIN_DEEPLINK })
-							: SharedDeeplinkManager.setDeeplink(deeplink);
-					}
-				} catch (e) {
-					Logger.error(e, `Deeplink: Error parsing deeplink`);
-				}
-			}),
-		[]
-	);
+			} catch (e) {
+				Logger.error(e, `Deeplink: Error parsing deeplink`);
+			}
+		});
+	};
+
+	useEffect(() => branchSubscribe(), []);
 
 	useEffect(() => {
 		SharedDeeplinkManager.init({

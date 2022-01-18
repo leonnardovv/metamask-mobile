@@ -59,6 +59,7 @@ public class MainApplication extends MultiDexApplication implements ShareApplica
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		RNBranchModule.getAutoInstance(this);
 
 		try {
 			Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
@@ -73,8 +74,6 @@ public class MainApplication extends MultiDexApplication implements ShareApplica
 		SoLoader.init(this, /* native exopackage */ false);
 
 		initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
-		RNBranchModule.getAutoInstance(this);
-
     }
     /**
      * Loads Flipper in React Native templates. Call this in the onCreate method with something like

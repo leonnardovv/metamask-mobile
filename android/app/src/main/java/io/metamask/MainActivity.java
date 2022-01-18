@@ -52,7 +52,7 @@ public class MainActivity extends ReactFragmentActivity {
 	@Override
 	public void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
-		setIntent(intent);
+		RNBranchModule.onNewIntent(intent);
 	}
 
 	@Override
